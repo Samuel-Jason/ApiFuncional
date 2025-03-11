@@ -1,0 +1,6 @@
+@ApiTesta_HostAddress = http://localhost:5188
+
+GET {{ApiTesta_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
