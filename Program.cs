@@ -1,4 +1,5 @@
 using ApiTesta.Data;
+using ApiTesta.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
+
 builder.Services.AddEntityFrameworkSqlServer()
     .AddDbContext<BancoContext>(o =>
         o.UseSqlServer(builder.Configuration.GetConnectionString("Database")));

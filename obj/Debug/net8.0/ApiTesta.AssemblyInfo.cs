@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiTesta")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f4cefe46a92dc052c65ab027ca2b7e4ab9ffb628")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiTesta")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiTesta")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,5 +1,6 @@
 ﻿using ApiTesta.Data;
 using ApiTesta.Models;
+using ApiTesta.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,42 +10,45 @@ namespace ApiTesta.Controllers
     [ApiController]
     public class PessoaController : ControllerBase
     {
-        private readonly BancoContext _context;
+        private readonly IPessoaRepository _pessoaRepository;
 
-        public PessoaController(BancoContext context)
+        public PessoaController(IPessoaRepository pessoaRepository)
         {
-            _context = context;
+            _pessoaRepository = pessoaRepository;
         }
 
         // GET: api/Pessoa
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pessoa>>> GetPessoas()
         {
-            return await _context.Pessoas.ToListAsync();
+            var pessoas = await _pessoaRepository.GetPessoaAsync();
+            return Ok(pessoas);
         }
 
         // GET: api/Pessoa/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Pessoa>> GetPessoa(int id)
         {
-            var pessoa = await _context.Pessoas.FindAsync(id);
+            var pessoa = await _pessoaRepository.GetPessoaByIdAsync(id);
 
-            if (pessoa == null)
+            if (pessoa != null)
             {
                 return NotFound();
             }
-
-            return pessoa;
+            return Ok(pessoa);
         }
 
         // POST: api/Pessoa
         [HttpPost]
         public async Task<ActionResult<Pessoa>> PostPessoa(Pessoa pessoa)
         {
-            _context.Pessoas.Add(pessoa);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPessoa", new { id = pessoa.Id }, pessoa);
+            var res = await _pessoaRepository.GetPessoaByIdAsync(pessoa.Id);
+            if(res == null)
+            {
+                await _pessoaRepository.AddPessoaAsync(pessoa);
+                return Ok(pessoa);
+            }
+            return NoContent();
         }
 
         // PUT: api/Pessoa/5
@@ -56,24 +60,7 @@ namespace ApiTesta.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(pessoa).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PessoaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _pessoaRepository.UpdatePessoaAsync(pessoa);
             return NoContent();
         }
 
@@ -81,21 +68,14 @@ namespace ApiTesta.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePessoa(int id)
         {
-            var pessoa = await _context.Pessoas.FindAsync(id);
+            var pessoa = await _pessoaRepository.GetPessoaByIdAsync(id);
             if (pessoa == null)
             {
                 return NotFound();
             }
 
-            _context.Pessoas.Remove(pessoa);
-            await _context.SaveChangesAsync();
-
+            await _pessoaRepository.DeletePessoaAsync(id);
             return NoContent();
-        }
-
-        private bool PessoaExists(int id)
-        {
-            return _context.Pessoas.Any(e => e.Id == id);
         }
     }
 }
