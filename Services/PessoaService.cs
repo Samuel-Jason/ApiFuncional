@@ -59,7 +59,7 @@ namespace ApiTesta.Services
             var usuarioExistente = await _pessoaRepository.GetUserByEmailAsync(login.Email);
             if (usuarioExistente != null)
             {
-                return null; // E-mail já cadastrado
+                return null;
             }
 
             var senhaHash = _authService.computedSha256Hash(login.Password);
@@ -67,11 +67,9 @@ namespace ApiTesta.Services
 
             await _pessoaRepository.AddPessoaAsync(novaPessoa);
 
-            // Gerar e retornar token JWT
             return _authService.GenerateJwtToken(login.Email);
         }
 
-        // Lógica do Login
         public async Task<string> LoginAsync(LoginModel login)
         {
             if (login == null || string.IsNullOrEmpty(login.Email) || string.IsNullOrEmpty(login.Password))
@@ -82,16 +80,15 @@ namespace ApiTesta.Services
             var usuario = await _pessoaRepository.GetUserByEmailAsync(login.Email);
             if (usuario == null)
             {
-                return null; // Credenciais inválidas
+                return null;
             }
 
             var senhaHash = _authService.computedSha256Hash(login.Password);
             if (usuario.PasswordHash != senhaHash)
             {
-                return null; // Senha incorreta
+                return null;
             }
 
-            // Gerar e retornar token JWT
             return _authService.GenerateJwtToken(usuario.Email);
         }
     }

@@ -2,7 +2,9 @@
 using ApiTesta.Infra.Auth;
 using ApiTesta.Models;
 using ApiTesta.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ApiTesta.Controllers
 {
@@ -12,11 +14,15 @@ namespace ApiTesta.Controllers
     {
         private readonly IPessoaService _pessoaService;
         private readonly IAuthService _authService;
+        private readonly ILogger<PessoaController> _logger;
 
-        public PessoaController(IPessoaService pessoaService, IAuthService authService)
+
+        public PessoaController(IPessoaService pessoaService, IAuthService authService, ILogger<PessoaController> logger)
         {
             _pessoaService = pessoaService;
             _authService = authService;
+            _logger = logger;
+
         }
 
         // GET: api/Pessoa
@@ -72,16 +78,45 @@ namespace ApiTesta.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel login) =>
-           (await _pessoaService.RegisterAsync(login)) is string token
-        ? Ok(new { Token = token })
-        : BadRequest(new { message = "E-mail já cadastrado ou dados inválidos." });
+        public async Task<IActionResult> Register([FromBody] RegisterModel login)
+        {
+            var result = await _pessoaService.RegisterAsync(login);
+
+            if (result is string token)
+                return Ok(new { Token = token });
+
+            return BadRequest(new { message = "E-mail já cadastrado ou dados inválidos." });
+        }
+
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel login) =>
-            (await _pessoaService.LoginAsync(login)) is string token
-                ? Ok(new { Token = token })
-                : Unauthorized(new { message = "Credenciais inválidas." });
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginModel login)
+        {
+            var token = await _pessoaService.LoginAsync(login);
+
+            if (token == null)
+            {
+                return Unauthorized(new { message = "Email ou Senha incorretos." });
+            }
+
+            // Criar opções do cookie
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,    // Protege contra ataques XSS
+                Secure = true,      // Apenas HTTPS
+                SameSite = SameSiteMode.Strict, // Evita CSRF
+                Expires = DateTime.UtcNow.AddHours(1) // Token expira em 1 hora
+            };
+
+            // Adicionar o token no cookie
+            Response.Cookies.Append("JwtToken", token, cookieOptions);
+
+            _logger.LogInformation($"Token gerado: {token}");
+
+            return Ok(new { message = "Login realizado com sucesso" });
+        }
+
 
     }
 }

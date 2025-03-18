@@ -48,7 +48,6 @@ namespace ApiTesta.Repository
         public async Task<Pessoa> GetUserByEmailAsync(string email)
         {
             return await _context.Pessoas.FirstOrDefaultAsync(p => p.Email == email);
-
         }
     }
 }
