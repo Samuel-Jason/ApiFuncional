@@ -13,10 +13,11 @@ namespace ApiTesta.Repository
             _context = context;
         }
 
-        public async Task<Pessoa> GetPessoaByIdAsync(int id)
+        public async Task<Pessoa?> GetPessoaByIdAsync(int id)
         {
-            return await _context.Pessoas.FindAsync(id);
+            return await _context.Pessoas.FirstOrDefaultAsync(p => p.Id == id);
         }
+
         public async Task<IEnumerable<Pessoa>> GetPessoaAsync()
         {
             return await _context.Pessoas.ToListAsync();
@@ -44,5 +45,10 @@ namespace ApiTesta.Repository
             }
         }
 
+        public async Task<Pessoa> GetUserByEmailAsync(string email)
+        {
+            return await _context.Pessoas.FirstOrDefaultAsync(p => p.Email == email);
+
+        }
     }
 }

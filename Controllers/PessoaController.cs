@@ -1,8 +1,8 @@
-﻿using ApiTesta.Data;
+﻿using ApiTesta.Infra;
+using ApiTesta.Infra.Auth;
 using ApiTesta.Models;
-using ApiTesta.Repository;
+using ApiTesta.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ApiTesta.Controllers
 {
@@ -10,31 +10,34 @@ namespace ApiTesta.Controllers
     [ApiController]
     public class PessoaController : ControllerBase
     {
-        private readonly IPessoaRepository _pessoaRepository;
+        private readonly IPessoaService _pessoaService;
+        private readonly IAuthService _authService;
 
-        public PessoaController(IPessoaRepository pessoaRepository)
+        public PessoaController(IPessoaService pessoaService, IAuthService authService)
         {
-            _pessoaRepository = pessoaRepository;
+            _pessoaService = pessoaService;
+            _authService = authService;
         }
 
         // GET: api/Pessoa
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pessoa>>> GetPessoas()
         {
-            var pessoas = await _pessoaRepository.GetPessoaAsync();
+            var pessoas = await _pessoaService.GetPessoasAsync();
             return Ok(pessoas);
         }
 
         // GET: api/Pessoa/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pessoa>> GetPessoa(int id)
+        public async Task<ActionResult<Pessoa>> GetPessoaById(int id)
         {
-            var pessoa = await _pessoaRepository.GetPessoaByIdAsync(id);
+            var pessoa = await _pessoaService.GetPessoaByIdAsync(id);
 
-            if (pessoa != null)
+            if (pessoa == null)
             {
                 return NotFound();
             }
+
             return Ok(pessoa);
         }
 
@@ -42,25 +45,15 @@ namespace ApiTesta.Controllers
         [HttpPost]
         public async Task<ActionResult<Pessoa>> PostPessoa(Pessoa pessoa)
         {
-            var res = await _pessoaRepository.GetPessoaByIdAsync(pessoa.Id);
-            if(res == null)
-            {
-                await _pessoaRepository.AddPessoaAsync(pessoa);
-                return Ok(pessoa);
-            }
-            return NoContent();
+            await _pessoaService.AddPessoaAsync(pessoa);
+            return Ok(pessoa);
         }
 
         // PUT: api/Pessoa/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPessoa(int id, Pessoa pessoa)
         {
-            if (id != pessoa.Id)
-            {
-                return BadRequest();
-            }
-
-            await _pessoaRepository.UpdatePessoaAsync(pessoa);
+            await _pessoaService.UpdatePessoaAsync(pessoa);
             return NoContent();
         }
 
@@ -68,14 +61,27 @@ namespace ApiTesta.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePessoa(int id)
         {
-            var pessoa = await _pessoaRepository.GetPessoaByIdAsync(id);
+            var pessoa = await _pessoaService.GetPessoaByIdAsync(id);
             if (pessoa == null)
             {
                 return NotFound();
             }
 
-            await _pessoaRepository.DeletePessoaAsync(id);
+            await _pessoaService.DeletePessoaAsync(id);
             return NoContent();
         }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterModel login) =>
+           (await _pessoaService.RegisterAsync(login)) is string token
+        ? Ok(new { Token = token })
+        : BadRequest(new { message = "E-mail já cadastrado ou dados inválidos." });
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel login) =>
+            (await _pessoaService.LoginAsync(login)) is string token
+                ? Ok(new { Token = token })
+                : Unauthorized(new { message = "Credenciais inválidas." });
+
     }
 }

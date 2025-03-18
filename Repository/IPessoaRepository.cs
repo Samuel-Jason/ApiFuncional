@@ -9,5 +9,6 @@ namespace ApiTesta.Repository
        Task AddPessoaAsync(Pessoa pessoa);
        Task UpdatePessoaAsync(Pessoa pessoa);
        Task DeletePessoaAsync(int id);
+       Task<Pessoa> GetUserByEmailAsync(string email);
     }
 }

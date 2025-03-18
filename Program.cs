@@ -1,5 +1,8 @@
 using ApiTesta.Data;
+using ApiTesta.Infra;
+using ApiTesta.Infra.Auth;
 using ApiTesta.Repository;
+using ApiTesta.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -11,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
+builder.Services.AddScoped<IPessoaService, PessoaService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddEntityFrameworkSqlServer()
     .AddDbContext<BancoContext>(o =>
