@@ -167,3 +167,4 @@ C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\obj\Debug\net8.0\ApiTesta.pdb
 C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\obj\Debug\net8.0\ApiTesta.genruntimeconfig.cache
 C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\obj\Debug\net8.0\ref\ApiTesta.dll
 C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\obj\Debug\net8.0\ApiTesta.sourcelink.json
+C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

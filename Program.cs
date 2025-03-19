@@ -3,8 +3,11 @@ using ApiTesta.Infra;
 using ApiTesta.Infra.Auth;
 using ApiTesta.Repository;
 using ApiTesta.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +35,25 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Configuração da autenticação JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = true;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"], // Adicione estas configurações no appsettings.json
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+            ClockSkew = TimeSpan.Zero // Remove a tolerância padrão de 5 minutos
+        };
+    });
+
 var app = builder.Build();
 
 CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
@@ -49,6 +71,8 @@ app.UseHttpsRedirection();
 // Adicionando o uso da política de CORS
 app.UseCors("AllowAll");
 
+// Usando a autenticação e autorização
+app.UseAuthentication();  // Coloque antes de UseAuthorization
 app.UseAuthorization();
 
 app.MapControllers();

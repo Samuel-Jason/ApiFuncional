@@ -56,7 +56,7 @@ namespace ApiTesta.Infra.Auth
             var token = new JwtSecurityToken(
                 issuer: issuer, // Define quem está emitindo o token
                 audience: audience, // Define quem pode usar o token
-                expires: DateTime.UtcNow.AddHours(8), // Tempo de expiração do token (8 horas)
+                expires: DateTime.UtcNow.AddSeconds(60), // Token válido por 20 segundos
                 signingCredentials: credentials, // Adiciona as credenciais de assinatura ao token
                 claims: claims // Adiciona as Claims ao token
             );

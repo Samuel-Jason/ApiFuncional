@@ -26,6 +26,7 @@ namespace ApiTesta.Controllers
         }
 
         // GET: api/Pessoa
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pessoa>>> GetPessoas()
         {
@@ -114,7 +115,7 @@ namespace ApiTesta.Controllers
 
             _logger.LogInformation($"Token gerado: {token}");
 
-            return Ok(new { message = "Login realizado com sucesso" });
+            return Ok(new { message = "Login realizado com sucesso", token });
         }
 
 
