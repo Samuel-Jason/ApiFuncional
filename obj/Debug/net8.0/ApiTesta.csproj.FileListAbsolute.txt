@@ -168,3 +168,5 @@ C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\obj\Debug\net8.0\ApiTesta.genr
 C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\obj\Debug\net8.0\ref\ApiTesta.dll
 C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\obj\Debug\net8.0\ApiTesta.sourcelink.json
 C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\samue\Desktop\PROJETOS\ApiTesta\ApiTesta\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

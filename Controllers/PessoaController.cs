@@ -26,7 +26,7 @@ namespace ApiTesta.Controllers
         }
 
         // GET: api/Pessoa
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pessoa>>> GetPessoas()
         {
@@ -107,7 +107,8 @@ namespace ApiTesta.Controllers
                 HttpOnly = true,    // Protege contra ataques XSS
                 Secure = true,      // Apenas HTTPS
                 SameSite = SameSiteMode.Strict, // Evita CSRF
-                Expires = DateTime.UtcNow.AddHours(1) // Token expira em 1 hora
+                Expires = DateTime.UtcNow.AddHours(1) // Token expira em 1 ho
+                                                      // ra
             };
 
             // Adicionar o token no cookie
