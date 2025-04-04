@@ -1,5 +1,6 @@
 ﻿using ApiTesta.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ApiTesta.DTOs
 {
@@ -17,7 +18,9 @@ namespace ApiTesta.DTOs
         [Range(1, 9999)]
         public long Estoque { get; set; }
         public string? ImageURL { get; set; }
+        [JsonIgnore]
         public Categoria? Categoria { get; set; }
+        public string? CategoriaNome { get; set; }
         public int CategoriaId { get; set; }
     }
 }

@@ -38,12 +38,15 @@ namespace ApiTesta.Repository
 
         public async Task<IEnumerable<Produto>> GetAll()
         {
-            return await _context.Produtos.ToListAsync();
+            return await _context.Produtos.Include(x => x.Categoria).ToListAsync();
         }
 
         public async Task<Produto> GetById(int id)
         {
-            return await _context.Produtos.FindAsync(id);
+            return await _context.Produtos
+                .Include(c => c.Categoria)
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Produto> Update(Produto produto)

@@ -9,7 +9,9 @@ namespace ApiTesta.DTOs.Mappings
         public MappingProfile()
         {
             CreateMap<Categoria, CategoriaDTO>().ReverseMap();
-            CreateMap<Produto, ProdutoDTO>().ReverseMap();
+            CreateMap<Produto, ProdutoDTO>();
+            CreateMap<Produto, ProdutoDTO>()
+                .ForMember(x => x.CategoriaNome, opt => opt.MapFrom(src => src.Categoria.Nome));
         }
     }
 }
