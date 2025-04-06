@@ -3,7 +3,7 @@ using ApiTesta.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ApiTesta.Services
+namespace ApiTesta.Services.Contracts
 {
     public interface ICategoriaService
     {
@@ -12,6 +12,6 @@ namespace ApiTesta.Services
         Task<IEnumerable<CategoriaDTO>> GetCategoriesWithProducts();
         Task<CategoriaDTO> Create(CategoriaDTO categoriaDTO);
         Task<CategoriaDTO> Update(CategoriaDTO categoriaDTO);
-        Task <CategoriaDTO> Delete(int id);
+        Task<CategoriaDTO> Delete(int id);
     }
 }

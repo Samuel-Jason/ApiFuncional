@@ -1,6 +1,7 @@
 ﻿using ApiTesta.Infra;
 using ApiTesta.Models;
 using ApiTesta.Repository;
+using ApiTesta.Services.Contracts;
 using System.Reflection.Metadata.Ecma335;
 
 namespace ApiTesta.Services

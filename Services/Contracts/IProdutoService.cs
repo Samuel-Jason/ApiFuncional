@@ -1,7 +1,7 @@
 ﻿using ApiTesta.DTOs;
 using ApiTesta.Models;
 
-namespace ApiTesta.Services
+namespace ApiTesta.Services.Contracts
 {
     public interface IProdutoService
     {

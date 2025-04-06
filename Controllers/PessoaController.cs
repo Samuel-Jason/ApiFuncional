@@ -1,7 +1,7 @@
 ﻿using ApiTesta.Infra;
 using ApiTesta.Infra.Auth;
 using ApiTesta.Models;
-using ApiTesta.Services;
+using ApiTesta.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

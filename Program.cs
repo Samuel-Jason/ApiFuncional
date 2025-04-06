@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Text;
 using AutoMapper;
 using ApiTesta.DTOs.Mappings;
+using ApiTesta.Services.Contracts;
 
 internal class Program
 {

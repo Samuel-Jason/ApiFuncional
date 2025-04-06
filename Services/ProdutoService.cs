@@ -1,6 +1,7 @@
 ﻿using ApiTesta.DTOs;
 using ApiTesta.Models;
 using ApiTesta.Repository;
+using ApiTesta.Services.Contracts;
 using AutoMapper;
 
 namespace ApiTesta.Services
