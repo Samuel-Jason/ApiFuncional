@@ -12,6 +12,7 @@ namespace ApiTesta.DTOs.Mappings
             CreateMap<Produto, ProdutoDTO>();
             CreateMap<Produto, ProdutoDTO>()
                 .ForMember(x => x.CategoriaNome, opt => opt.MapFrom(src => src.Categoria.Nome));
+            CreateMap<ProdutoDTO, Produto>();
         }
     }
 }
