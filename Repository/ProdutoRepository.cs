@@ -51,9 +51,28 @@ namespace ApiTesta.Repository
 
         public async Task<Produto> Update(Produto produto)
         {
-            _context.Produtos.Update(produto);
+            var produtoExistente = await _context.Produtos.FindAsync(produto.Id);
+
+            if (produtoExistente == null)
+                throw new Exception("Produto não encontrado.");
+
+            produtoExistente.Nome = produto.Nome;
+            produtoExistente.Preco = produto.Preco;
+            produtoExistente.Descricao = produto.Descricao;
+            produtoExistente.Estoque = produto.Estoque;
+            produtoExistente.ImageURL = produto.ImageURL;
+            produtoExistente.CategoriaId = produto.CategoriaId;
+
             await _context.SaveChangesAsync();
-            return produto;
+
+            return produtoExistente;
         }
+
+        //public async Task<Produto> Update(Produto produto)
+        //{
+        //    _context.Produtos.Update(produto);
+        //    await _context.SaveChangesAsync();
+        //    return produto;
+        //}
     }
 }
